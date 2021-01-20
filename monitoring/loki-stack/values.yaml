@@ -1,0 +1,16 @@
+loki:
+  enabled: true
+
+promtail:
+  enabled: true
+
+grafana:
+  enabled: true
+  sidecar:
+    datasources:
+      enabled: true
+  image:
+    tag: 7.3.7
+
+prometheus:
+  enabled: false
