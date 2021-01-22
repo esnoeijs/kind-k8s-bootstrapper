@@ -5,12 +5,7 @@ promtail:
   enabled: true
 
 grafana:
-  enabled: true
-  sidecar:
-    datasources:
-      enabled: true
-  image:
-    tag: 7.3.7
+  enabled: false
 
 prometheus:
   enabled: false

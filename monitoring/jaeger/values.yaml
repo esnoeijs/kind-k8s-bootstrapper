@@ -7,6 +7,13 @@ provisionDataStore:
   elasticsearch: false
   kafka: false
 
+# helm chart ignores this?
+query:
+  ingress:
+    enabled: true
+    hosts:
+      - jaeger.localhost
+
 storage:
   # allowed values (cassandra, elasticsearch)
   type: elasticsearch

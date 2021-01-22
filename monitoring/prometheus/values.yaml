@@ -1,0 +1,25 @@
+alertmanager:
+  enabled: false
+
+grafana:
+  enabled: true
+  defaultDashboardsEnabled: true
+  adminPassword: admin
+
+  ingress:
+    enabled: true
+    hosts:
+      - grafana.localhost
+
+  ## Configure additional grafana datasources (passed through tpl)
+  ## ref: http://docs.grafana.org/administration/provisioning/#datasources
+  additionalDataSources:
+    - name: Loki
+      access: proxy
+      type: loki
+      url: http://loki:3100
+    - name: Jaeger
+      access: proxy
+      type: jaeger
+      url: http://jaeger-query
+

@@ -6,8 +6,6 @@ Some scripts to quickly setup a local k8s cluster with KIND and install prom/lok
 
 includes nginx ingresses that will bind to port 80 and 443
 
-It's based on helm v2 charts so already deprecated ^-^ 
-
 based on https://github.com/chris-cmsoft/kubernetes-bootstrapper
 
 ## usage
