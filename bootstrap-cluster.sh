@@ -9,7 +9,9 @@ kubectl apply -f monitoring/elastic/app.yaml -n monitoring
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm install prometheus prometheus-community/kube-prometheus-stack \
     --namespace monitoring \
-    --values monitoring/prometheus/values.yaml
+    --values monitoring/prometheus/values.yaml \
+    --wait \
+    --timeout 10m
 
 # jaeger
 helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
