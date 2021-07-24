@@ -1,6 +1,11 @@
 alertmanager:
   enabled: false
 
+server:
+  env:
+    - name: JAEGER_AGENT_PORT
+      value: ""
+
 grafana:
   enabled: true
   defaultDashboardsEnabled: true
@@ -11,15 +16,42 @@ grafana:
     hosts:
       - grafana.localhost
 
+  sidecar:
+    datasources:
+      defaultDatasourceEnabled: false
+
   ## Configure additional grafana datasources (passed through tpl)
   ## ref: http://docs.grafana.org/administration/provisioning/#datasources
   additionalDataSources:
+    - name: Prometheus
+      type: prometheus
+      url: http://prometheus-kube-prometheus-prometheus:9090/
+      access: proxy
+      isDefault: true
+      jsonData:
+        timeInterval: "30s"
+        exemplarTraceIdDestinations:
+          - datasourceUid: tempo_datasource
+            name: traceId
     - name: Loki
       access: proxy
       type: loki
+      uid: loki_datasource
       url: http://loki:3100
-    - name: Jaeger
+      jsonData:
+        derivedFields:
+          - datasourceUid: tempo_datasource
+            matcherRegex: "\"traceId\":\"(\\w+)\""
+            name: TraceId
+            url: "$${__value.raw}"
+    - name: Tempo
       access: proxy
-      type: jaeger
-      url: http://jaeger-query
-
+      type: tempo
+      url: http://tempo:3100
+      uid: tempo_datasource
+      jsonData:
+        # @todo this doesn't work yet but it should be something close to this.
+        tracesToLogs:
+          - datasourceUid: loki_datasource
+            tags:
+              - traceId
